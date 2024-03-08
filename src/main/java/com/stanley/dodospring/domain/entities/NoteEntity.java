@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -26,13 +26,14 @@ public class NoteEntity {
     @Column(columnDefinition = "Write something here!")
     private String body;
 
-    @Temporal(TemporalType.DATE)
-    private Date createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private String icon;
 
-    private String color;
+    private String color = "red";
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
     private UserEntity user;
 
 }

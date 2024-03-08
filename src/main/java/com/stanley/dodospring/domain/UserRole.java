@@ -1,6 +1,6 @@
 package com.stanley.dodospring.domain;
 
-public enum UserRoles {
+public enum UserRole {
     ADMIN,
     USER
 }
