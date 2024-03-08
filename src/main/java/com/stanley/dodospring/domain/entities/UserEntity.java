@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,5 +33,8 @@ public class UserEntity {
 
     @Column(nullable = false)
     private UserRole role = UserRole.USER;
+
+    @OneToMany(mappedBy = "user")
+    private List<NoteEntity> notes;
 
 }

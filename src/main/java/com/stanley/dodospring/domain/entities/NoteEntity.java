@@ -20,16 +20,18 @@ public class NoteEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_id_seq")
     private Long id;
 
-    @Column(columnDefinition = "Title")
-    private String title;
+    @Column(nullable = false)
+    private String title = "Title";
 
-    @Column(columnDefinition = "Write something here!")
-    private String body;
+    @Column(nullable = false)
+    private String body = "Write something here!";
 
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private String icon;
 
+    @Column(nullable = false)
     private String color = "red";
 
     @ManyToOne(cascade = CascadeType.ALL)
