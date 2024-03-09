@@ -4,7 +4,9 @@ import com.stanley.dodospring.domain.dto.UserDto;
 import com.stanley.dodospring.domain.entities.UserEntity;
 import com.stanley.dodospring.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper implements Mapper<UserEntity, UserDto> {
 
     private final ModelMapper modelMapper;

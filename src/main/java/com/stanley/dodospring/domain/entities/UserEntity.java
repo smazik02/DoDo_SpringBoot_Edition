@@ -19,7 +19,6 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
-    @Column(nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -31,7 +30,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private UserRole role = UserRole.USER;
 
     @OneToMany(mappedBy = "user")

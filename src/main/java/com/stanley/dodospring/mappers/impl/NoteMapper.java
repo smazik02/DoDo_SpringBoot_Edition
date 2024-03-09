@@ -4,7 +4,9 @@ import com.stanley.dodospring.domain.dto.NoteDto;
 import com.stanley.dodospring.domain.entities.NoteEntity;
 import com.stanley.dodospring.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NoteMapper implements Mapper<NoteEntity, NoteDto> {
 
     private final ModelMapper modelMapper;
