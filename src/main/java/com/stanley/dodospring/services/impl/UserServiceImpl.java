@@ -1,5 +1,6 @@
 package com.stanley.dodospring.services.impl;
 
+import com.stanley.dodospring.domain.dto.UserDto;
 import com.stanley.dodospring.domain.entities.UserEntity;
 import com.stanley.dodospring.repositories.UserRepository;
 import com.stanley.dodospring.services.UserService;
@@ -33,6 +34,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity create(UserEntity userEntity) {
         return userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean isExists(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public UserEntity update(Long id, UserDto updateUserDto) {
+        return userRepository.findById(id).map(existingUser -> {
+            Optional.ofNullable(updateUserDto.getUsername()).ifPresent(existingUser::setUsername);
+            Optional.ofNullable(updateUserDto.getEmail()).ifPresent(existingUser::setEmail);
+            Optional.ofNullable(updateUserDto.getPassword()).ifPresent(existingUser::setPassword);
+            Optional.ofNullable(updateUserDto.getRole()).ifPresent(existingUser::setRole);
+            return userRepository.save(existingUser);
+        }).orElseThrow(() -> new RuntimeException("User does not exist"));
+    }
+
+    @Override
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

@@ -41,9 +41,26 @@ public class UserController {
 
     @PostMapping(path = "/")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto createUserDto) {
-        UserEntity userEntity = userMapper.mapFrom(createUserDto);
+        UserEntity userEntity = new UserEntity(
+                createUserDto.getUsername(),
+                createUserDto.getEmail(),
+                createUserDto.getPassword());
         UserEntity savedUserEntity = userService.create(userEntity);
         return new ResponseEntity<>(userMapper.mapTo(savedUserEntity), HttpStatus.CREATED);
+    }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto updateUserDto) {
+        if (!userService.isExists(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        UserEntity editedUser = userService.update(id, updateUserDto);
+        return new ResponseEntity<>(userMapper.mapTo(editedUser), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

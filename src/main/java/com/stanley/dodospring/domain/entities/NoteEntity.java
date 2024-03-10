@@ -2,16 +2,14 @@ package com.stanley.dodospring.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "notes")
 public class NoteEntity {
@@ -20,19 +18,20 @@ public class NoteEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_id_seq")
     private Long id;
 
-    @Column(nullable = false)
-    private String title = "Title";
+    @Column(columnDefinition = "varchar(255) default 'Title'")
+    private String title;
 
-    @Column(nullable = false)
-    private String body = "Write something here!";
+    @Column(columnDefinition = "varchar(255) default 'Write something here!'")
+    private String body;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP default LOCALTIMESTAMP")
+    private Date createdAt;
 
     private String icon;
 
-    @Column(nullable = false)
-    private String color = "red";
+    @Column(columnDefinition = "varchar(255) default 'red'")
+    private String color;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
