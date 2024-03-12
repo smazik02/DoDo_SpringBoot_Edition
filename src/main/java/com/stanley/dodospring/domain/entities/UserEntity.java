@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,9 +29,6 @@ public class UserEntity {
     @Column(columnDefinition = "varchar(255) default 'USER'")
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
-
-    @OneToMany(mappedBy = "user")
-    private List<NoteEntity> notes;
 
     public UserEntity(String username, String email, String password) {
         this.username = username;

@@ -11,6 +11,8 @@ public interface UserService {
 
     List<UserEntity> findAll();
 
+    List<UserEntity> filter(UserDto filterUserDto);
+
     UserEntity create(UserEntity userEntity);
 
     boolean isExists(Long id);

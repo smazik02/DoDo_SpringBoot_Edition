@@ -36,12 +36,19 @@ public class UserController {
         return new ResponseEntity<>(users.stream().map(userMapper::mapTo).toList(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/filter")
+    public ResponseEntity<List<UserDto>> filterUsers(@RequestBody UserDto filterUserDto) {
+        List<UserEntity> filteredUsers = userService.filter(filterUserDto);
+        return new ResponseEntity<>(filteredUsers.stream().map(userMapper::mapTo).toList(), HttpStatus.OK);
+    }
+
     @PostMapping(path = "/")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto createUserDto) {
         UserEntity userEntity = new UserEntity(
                 createUserDto.getUsername(),
                 createUserDto.getEmail(),
-                createUserDto.getPassword());
+                createUserDto.getPassword()
+        );
         UserEntity savedUserEntity = userService.create(userEntity);
         return new ResponseEntity<>(userMapper.mapTo(savedUserEntity), HttpStatus.CREATED);
     }

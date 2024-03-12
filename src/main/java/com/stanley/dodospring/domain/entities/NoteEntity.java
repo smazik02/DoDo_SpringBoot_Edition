@@ -37,4 +37,11 @@ public class NoteEntity {
     @JoinColumn(name = "author_id")
     private UserEntity user;
 
+    public NoteEntity(String title, String body, String icon, String color) {
+        if (title != null) this.title = title;
+        if (body != null) this.body = body;
+        if (icon != null) this.icon = icon;
+        if (color != null) this.color = color;
+    }
+
 }

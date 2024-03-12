@@ -32,6 +32,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserEntity> filter(UserDto filterUserDto) {
+        return StreamSupport
+                .stream(userRepository.filter(
+                        filterUserDto.getUsername(),
+                        filterUserDto.getEmail(),
+                        filterUserDto.getPassword(),
+                        filterUserDto.getRole()).spliterator(), false)
+                .toList();
+    }
+
+    @Override
     public UserEntity create(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
