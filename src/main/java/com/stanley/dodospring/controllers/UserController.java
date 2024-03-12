@@ -25,17 +25,14 @@ public class UserController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        Optional<UserEntity> foundUser = userService.findOne(id);
-        return foundUser.map(userEntity -> {
-            UserDto foundUserDto = userMapper.mapTo(userEntity);
-            return new ResponseEntity<>(foundUserDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return userService.findOne(id)
+                .map(userEntity -> new ResponseEntity<>(userMapper.mapTo(userEntity), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(path = "/")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserEntity> users = userService.findAll();
-        List<UserDto> userDtos = users.stream().map(userMapper::mapTo).toList();
         return new ResponseEntity<>(users.stream().map(userMapper::mapTo).toList(), HttpStatus.OK);
     }
 
@@ -51,10 +48,10 @@ public class UserController {
 
     @PatchMapping(path = "/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto updateUserDto) {
-        if (!userService.isExists(id))
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        UserEntity editedUser = userService.update(id, updateUserDto);
-        return new ResponseEntity<>(userMapper.mapTo(editedUser), HttpStatus.OK);
+        Optional<UserEntity> editedUser = userService.update(id, updateUserDto);
+        return editedUser
+                .map(userEntity -> new ResponseEntity<>(userMapper.mapTo(userEntity), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping(path = "/{id}")

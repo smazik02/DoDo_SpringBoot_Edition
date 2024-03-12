@@ -15,7 +15,7 @@ public interface UserService {
 
     boolean isExists(Long id);
 
-    UserEntity update(Long id, UserDto updateUserDto);
+    Optional<UserEntity> update(Long id, UserDto updateUserDto);
 
     void delete(Long id);
 }

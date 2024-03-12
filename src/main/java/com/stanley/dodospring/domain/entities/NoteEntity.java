@@ -19,19 +19,19 @@ public class NoteEntity {
     private Long id;
 
     @Column(columnDefinition = "varchar(255) default 'Title'")
-    private String title;
+    private String title = "Title";
 
     @Column(columnDefinition = "varchar(255) default 'Write something here!'")
-    private String body;
+    private String body = "Write something here!";
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP default LOCALTIMESTAMP")
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     private String icon;
 
     @Column(columnDefinition = "varchar(255) default 'red'")
-    private String color;
+    private String color = "red";
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")

@@ -42,14 +42,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity update(Long id, UserDto updateUserDto) {
+    public Optional<UserEntity> update(Long id, UserDto updateUserDto) {
         return userRepository.findById(id).map(existingUser -> {
             Optional.ofNullable(updateUserDto.getUsername()).ifPresent(existingUser::setUsername);
             Optional.ofNullable(updateUserDto.getEmail()).ifPresent(existingUser::setEmail);
             Optional.ofNullable(updateUserDto.getPassword()).ifPresent(existingUser::setPassword);
             Optional.ofNullable(updateUserDto.getRole()).ifPresent(existingUser::setRole);
             return userRepository.save(existingUser);
-        }).orElseThrow(() -> new RuntimeException("User does not exist"));
+        });
     }
 
     @Override
