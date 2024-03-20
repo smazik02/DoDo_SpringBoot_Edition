@@ -1,23 +1,25 @@
 package com.stanley.dodospring.services;
 
+import com.stanley.dodospring.domain.dto.UpdateFilterUserDto;
 import com.stanley.dodospring.domain.dto.UserDto;
-import com.stanley.dodospring.domain.entities.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<UserEntity> findOne(Long id);
+    Optional<UserDto> findOne(Long id);
 
-    List<UserEntity> findAll();
+    List<UserDto> findAll();
 
-    List<UserEntity> filter(UserDto filterUserDto);
+    List<UserDto> filter(UpdateFilterUserDto filterUserDto);
 
-    UserEntity create(UserEntity userEntity);
+    UserDto create(UserDto createUserDto);
+
+    Optional<UserDto> update(Long id, UpdateFilterUserDto updateUserDto);
+
+    void delete(Long id);
 
     boolean isExists(Long id);
 
-    Optional<UserEntity> update(Long id, UserDto updateUserDto);
-
-    void delete(Long id);
+    Optional<UserDto> findOneByEmail(String email);
 }

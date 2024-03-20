@@ -2,11 +2,13 @@ package com.stanley.dodospring.repositories;
 
 import com.stanley.dodospring.domain.UserRole;
 import com.stanley.dodospring.domain.entities.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity u where" +
             "(:username is null or u.username like %:username%)" +
@@ -18,5 +20,7 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
             @Param("email") String email,
             @Param("password") String password,
             @Param("role") UserRole role);
-    
+
+    Optional<UserEntity> findByEmail(String email);
+
 }

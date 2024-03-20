@@ -1,63 +1,64 @@
 package com.stanley.dodospring.controllers;
 
+import com.stanley.dodospring.domain.dto.UpdateFilterUserDto;
 import com.stanley.dodospring.domain.dto.UserDto;
-import com.stanley.dodospring.domain.entities.UserEntity;
-import com.stanley.dodospring.mappers.Mapper;
 import com.stanley.dodospring.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    private final Mapper<UserEntity, UserDto> userMapper;
 
-    public UserController(UserService userService, Mapper<UserEntity, UserDto> userMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userMapper = userMapper;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/admin/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
         return userService.findOne(id)
-                .map(userEntity -> new ResponseEntity<>(userMapper.mapTo(userEntity), HttpStatus.OK))
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping(path = "/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable("email") String email) {
+        return userService.findOneByEmail(email)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(path = "/")
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserEntity> users = userService.findAll();
-        return new ResponseEntity<>(users.stream().map(userMapper::mapTo).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/filter")
-    public ResponseEntity<List<UserDto>> filterUsers(@RequestBody UserDto filterUserDto) {
-        List<UserEntity> filteredUsers = userService.filter(filterUserDto);
-        return new ResponseEntity<>(filteredUsers.stream().map(userMapper::mapTo).toList(), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> filterUsers(@Valid @RequestBody UpdateFilterUserDto filterUserDto) {
+        return new ResponseEntity<>(userService.filter(filterUserDto), HttpStatus.OK);
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto createUserDto) {
-        UserEntity userEntity = new UserEntity(
-                createUserDto.getUsername(),
-                createUserDto.getEmail(),
-                createUserDto.getPassword()
-        );
-        UserEntity savedUserEntity = userService.create(userEntity);
-        return new ResponseEntity<>(userMapper.mapTo(savedUserEntity), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto createUserDto) {
+        return new ResponseEntity<>(userService.create(createUserDto), HttpStatus.CREATED);
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto updateUserDto) {
-        Optional<UserEntity> editedUser = userService.update(id, updateUserDto);
-        return editedUser
-                .map(userEntity -> new ResponseEntity<>(userMapper.mapTo(userEntity), HttpStatus.OK))
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody UpdateFilterUserDto updateUserDto
+    ) {
+        return userService.update(id, updateUserDto)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -65,6 +66,20 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException exception
+    ) {
+        HashMap<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getAllErrors()
+                .forEach(error -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 }

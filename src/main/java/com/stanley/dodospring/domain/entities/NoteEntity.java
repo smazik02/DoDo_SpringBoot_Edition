@@ -1,5 +1,6 @@
 package com.stanley.dodospring.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,11 @@ public class NoteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_id_seq")
+    @SequenceGenerator(
+            name = "note_id_seq",
+            sequenceName = "note_id_seq",
+            allocationSize = 1
+    )
     private Long id;
 
     @Column(columnDefinition = "varchar(255) default 'Title'")
@@ -25,7 +31,7 @@ public class NoteEntity {
     private String body = "Write something here!";
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "TIMESTAMP default LOCALTIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP default LOCALTIMESTAMP", updatable = false)
     private Date createdAt = new Date();
 
     private String icon;
@@ -33,15 +39,9 @@ public class NoteEntity {
     @Column(columnDefinition = "varchar(255) default 'red'")
     private String color = "red";
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @JsonBackReference
     private UserEntity user;
-
-    public NoteEntity(String title, String body, String icon, String color) {
-        if (title != null) this.title = title;
-        if (body != null) this.body = body;
-        if (icon != null) this.icon = icon;
-        if (color != null) this.color = color;
-    }
 
 }

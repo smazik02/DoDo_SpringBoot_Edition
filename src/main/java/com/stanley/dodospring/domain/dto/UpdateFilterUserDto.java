@@ -2,20 +2,12 @@ package com.stanley.dodospring.domain.dto;
 
 import com.stanley.dodospring.domain.UserRole;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 
-public record UserDto(
-
-        @NotEmpty(message = "Username should not be empty")
+public record UpdateFilterUserDto(
         String username,
-
-        @NotEmpty(message = "Email should not be empty")
         @Email(message = "Not a valid email")
         String email,
-
-        @NotEmpty(message = "Password should not be empty")
         String password,
-
         UserRole role
 ) {
 }

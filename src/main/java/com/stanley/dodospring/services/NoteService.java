@@ -1,14 +1,17 @@
 package com.stanley.dodospring.services;
 
-import com.stanley.dodospring.domain.entities.NoteEntity;
+import com.stanley.dodospring.domain.dto.FilterNoteDto;
+import com.stanley.dodospring.domain.dto.NoteDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface NoteService {
-    Optional<NoteEntity> findOne(Long id);
+    Optional<NoteDto> findOne(Long id);
 
-    NoteEntity create(Long userId, NoteEntity noteEntity);
+    List<NoteDto> findByUser(Long userId);
 
-    List<NoteEntity> findByUser(Long userId);
+    Optional<NoteDto> create(NoteDto createNoteDto);
+
+    List<NoteDto> filter(FilterNoteDto filterNoteDto);
 }
