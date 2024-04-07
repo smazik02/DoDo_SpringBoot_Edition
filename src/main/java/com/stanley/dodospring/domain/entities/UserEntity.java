@@ -36,10 +36,16 @@ public class UserEntity implements Serializable {
 
     @Column(columnDefinition = "varchar(255) default 'USER'")
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private UserRole role = UserRole.ROLE_USER;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<NoteEntity> notes;
 
+    public UserEntity(String username, String email, String password, UserRole userRole) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = userRole;
+    }
 }
