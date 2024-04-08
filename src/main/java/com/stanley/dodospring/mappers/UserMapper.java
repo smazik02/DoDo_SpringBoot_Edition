@@ -13,15 +13,7 @@ public class UserMapper {
 
     private final PasswordEncoder passwordEncoder;
 
-    public CreateUserDto mapTo(UserEntity userEntity) {
-        return new CreateUserDto(
-                userEntity.getUsername(),
-                userEntity.getEmail(),
-                userEntity.getPassword(),
-                userEntity.getRole());
-    }
-
-    public ReturnUserDto mapToReturn(UserEntity userEntity) {
+    public ReturnUserDto mapTo(UserEntity userEntity) {
         return new ReturnUserDto(
                 userEntity.getUsername(),
                 userEntity.getEmail(),

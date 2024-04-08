@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<ReturnUserDto> findOne(Long id) {
-        return userRepository.findById(id).map(userMapper::mapToReturn);
+        return userRepository.findById(id).map(userMapper::mapTo);
     }
 
     @Override
     public Optional<ReturnUserDto> findOneByEmail(String email) {
-        return userRepository.findByEmail(email).map(userMapper::mapToReturn);
+        return userRepository.findByEmail(email).map(userMapper::mapTo);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findAll()
                 .stream()
-                .map(userMapper::mapToReturn)
+                .map(userMapper::mapTo)
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                         filterUserDto.username(),
                         filterUserDto.email(),
                         filterUserDto.role()).spliterator(), false)
-                .map(userMapper::mapToReturn)
+                .map(userMapper::mapTo)
                 .toList();
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public ReturnUserDto create(CreateUserDto createUserDto) {
         UserEntity userEntity = userMapper.mapFrom(createUserDto);
         UserEntity savedUser = userRepository.save(userEntity);
-        return userMapper.mapToReturn(savedUser);
+        return userMapper.mapTo(savedUser);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
             Optional.ofNullable(updateUserDto.email()).ifPresent(existingUser::setEmail);
             Optional.ofNullable(updateUserDto.role()).ifPresent(existingUser::setRole);
             UserEntity editedUser = userRepository.save(existingUser);
-            return userMapper.mapToReturn(editedUser);
+            return userMapper.mapTo(editedUser);
         });
     }
 
