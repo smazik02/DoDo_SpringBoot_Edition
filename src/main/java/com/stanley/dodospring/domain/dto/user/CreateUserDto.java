@@ -1,10 +1,10 @@
-package com.stanley.dodospring.domain.dto;
+package com.stanley.dodospring.domain.dto.user;
 
 import com.stanley.dodospring.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public record UserDto(
+public record CreateUserDto(
 
         @NotEmpty(message = "Username should not be empty")
         String username,
@@ -17,5 +17,6 @@ public record UserDto(
         String password,
 
         UserRole role
+
 ) {
 }

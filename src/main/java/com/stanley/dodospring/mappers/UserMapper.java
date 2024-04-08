@@ -1,27 +1,40 @@
 package com.stanley.dodospring.mappers;
 
-import com.stanley.dodospring.domain.dto.UserDto;
+import com.stanley.dodospring.domain.dto.user.CreateUserDto;
+import com.stanley.dodospring.domain.dto.user.ReturnUserDto;
 import com.stanley.dodospring.domain.entities.UserEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
-    public UserDto mapTo(UserEntity userEntity) {
-        return new UserDto(
+    private final PasswordEncoder passwordEncoder;
+
+    public CreateUserDto mapTo(UserEntity userEntity) {
+        return new CreateUserDto(
                 userEntity.getUsername(),
                 userEntity.getEmail(),
                 userEntity.getPassword(),
                 userEntity.getRole());
     }
 
-    public UserEntity mapFrom(UserDto userDto) {
+    public ReturnUserDto mapToReturn(UserEntity userEntity) {
+        return new ReturnUserDto(
+                userEntity.getUsername(),
+                userEntity.getEmail(),
+                userEntity.getRole());
+    }
+
+    public UserEntity mapFrom(CreateUserDto createUserDto) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(userDto.username());
-        userEntity.setEmail(userDto.email());
-        userEntity.setPassword(userDto.password());
-        if (userDto.role() != null)
-            userEntity.setRole(userDto.role());
+        userEntity.setUsername(createUserDto.username());
+        userEntity.setEmail(createUserDto.email());
+        userEntity.setPassword(createUserDto.password());
+        if (createUserDto.role() != null)
+            userEntity.setRole(createUserDto.role());
         return userEntity;
     }
 

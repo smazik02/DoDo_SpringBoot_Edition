@@ -1,7 +1,8 @@
 package com.stanley.dodospring.services.impl;
 
-import com.stanley.dodospring.domain.dto.UpdateFilterUserDto;
-import com.stanley.dodospring.domain.dto.UserDto;
+import com.stanley.dodospring.domain.dto.user.CreateUserDto;
+import com.stanley.dodospring.domain.dto.user.ReturnUserDto;
+import com.stanley.dodospring.domain.dto.user.UpdateFilterUserDto;
 import com.stanley.dodospring.domain.entities.UserEntity;
 import com.stanley.dodospring.mappers.UserMapper;
 import com.stanley.dodospring.repositories.UserRepository;
@@ -24,52 +25,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findOne(Long id) {
-        return userRepository.findById(id).map(userMapper::mapTo);
+    public Optional<ReturnUserDto> findOne(Long id) {
+        return userRepository.findById(id).map(userMapper::mapToReturn);
     }
 
     @Override
-    public Optional<UserDto> findOneByEmail(String email) {
-        return userRepository.findByEmail(email).map(userMapper::mapTo);
+    public Optional<ReturnUserDto> findOneByEmail(String email) {
+        return userRepository.findByEmail(email).map(userMapper::mapToReturn);
     }
 
     @Override
-    public List<UserDto> findAll() {
+    public List<ReturnUserDto> findAll() {
         return userRepository
                 .findAll()
                 .stream()
-                .map(userMapper::mapTo)
+                .map(userMapper::mapToReturn)
                 .toList();
     }
 
     @Override
-    public List<UserDto> filter(UpdateFilterUserDto filterUserDto) {
+    public List<ReturnUserDto> filter(UpdateFilterUserDto filterUserDto) {
         return StreamSupport
                 .stream(userRepository.filter(
                         filterUserDto.username(),
                         filterUserDto.email(),
-                        filterUserDto.password(),
                         filterUserDto.role()).spliterator(), false)
-                .map(userMapper::mapTo)
+                .map(userMapper::mapToReturn)
                 .toList();
     }
 
     @Override
-    public UserDto create(UserDto createUserDto) {
+    public ReturnUserDto create(CreateUserDto createUserDto) {
         UserEntity userEntity = userMapper.mapFrom(createUserDto);
         UserEntity savedUser = userRepository.save(userEntity);
-        return userMapper.mapTo(savedUser);
+        return userMapper.mapToReturn(savedUser);
     }
 
     @Override
-    public Optional<UserDto> update(Long id, UpdateFilterUserDto updateUserDto) {
+    public Optional<ReturnUserDto> update(Long id, UpdateFilterUserDto updateUserDto) {
         return userRepository.findById(id).map(existingUser -> {
             Optional.ofNullable(updateUserDto.username()).ifPresent(existingUser::setUsername);
             Optional.ofNullable(updateUserDto.email()).ifPresent(existingUser::setEmail);
-            Optional.ofNullable(updateUserDto.password()).ifPresent(existingUser::setPassword);
             Optional.ofNullable(updateUserDto.role()).ifPresent(existingUser::setRole);
             UserEntity editedUser = userRepository.save(existingUser);
-            return userMapper.mapTo(editedUser);
+            return userMapper.mapToReturn(editedUser);
         });
     }
 

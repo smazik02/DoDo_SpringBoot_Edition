@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication()
 public class DoDoSpringBootEditionApplication {
@@ -16,10 +17,10 @@ public class DoDoSpringBootEditionApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository) {
+    CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            userRepository.save(new UserEntity("admin", "admin@local.host", "admin", UserRole.ROLE_ADMIN));
-            userRepository.save(new UserEntity("user", "user@local.host", "user", UserRole.ROLE_USER));
+            userRepository.save(new UserEntity("admin", "admin@local.host", passwordEncoder.encode("admin"), UserRole.ROLE_ADMIN));
+            userRepository.save(new UserEntity("user", "user@local.host", passwordEncoder.encode("password"), UserRole.ROLE_USER));
         };
     }
 

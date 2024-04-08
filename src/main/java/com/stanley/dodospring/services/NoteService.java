@@ -1,7 +1,7 @@
 package com.stanley.dodospring.services;
 
-import com.stanley.dodospring.domain.dto.FilterNoteDto;
-import com.stanley.dodospring.domain.dto.NoteDto;
+import com.stanley.dodospring.domain.dto.note.FilterNoteDto;
+import com.stanley.dodospring.domain.dto.note.NoteDto;
 
 import java.util.List;
 import java.util.Optional;
