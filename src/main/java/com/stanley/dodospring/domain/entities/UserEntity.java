@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {
@@ -36,10 +38,16 @@ public class UserEntity implements Serializable {
 
     @Column(columnDefinition = "varchar(255) default 'USER'")
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private UserRole role = UserRole.ROLE_USER;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<NoteEntity> notes;
 
+    public UserEntity(String username, String email, String password, UserRole userRole) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = userRole;
+    }
 }

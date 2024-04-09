@@ -13,3 +13,14 @@ spring:
         format_sql: true
 server:
   port: 5000
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: GUSXi8tF4zHBk3Sok9MdZWgaTQ+IN18zN0+nJrNsWSSBxS93B5JkAYsdl3dCYyF3
+      expiration: 86400000

@@ -1,6 +1,6 @@
 package com.stanley.dodospring.mappers;
 
-import com.stanley.dodospring.domain.dto.NoteDto;
+import com.stanley.dodospring.domain.dto.note.NoteDto;
 import com.stanley.dodospring.domain.entities.NoteEntity;
 import com.stanley.dodospring.domain.entities.UserEntity;
 import org.springframework.stereotype.Component;

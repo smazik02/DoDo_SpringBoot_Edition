@@ -1,7 +1,7 @@
 package com.stanley.dodospring.controllers;
 
-import com.stanley.dodospring.domain.dto.FilterNoteDto;
-import com.stanley.dodospring.domain.dto.NoteDto;
+import com.stanley.dodospring.domain.dto.note.FilterNoteDto;
+import com.stanley.dodospring.domain.dto.note.NoteDto;
 import com.stanley.dodospring.services.NoteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

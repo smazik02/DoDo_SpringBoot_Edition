@@ -1,4 +1,4 @@
-package com.stanley.dodospring.domain.dto;
+package com.stanley.dodospring.domain.dto.note;
 
 import jakarta.validation.constraints.NotNull;
 
