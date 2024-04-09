@@ -5,10 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityUser implements UserDetails {
+public class SecurityUser implements UserDetails, Principal {
 
     private final UserEntity user;
 
@@ -51,4 +52,8 @@ public class SecurityUser implements UserDetails {
         return true;
     }
 
+    @Override
+    public String getName() {
+        return user.getEmail();
+    }
 }
