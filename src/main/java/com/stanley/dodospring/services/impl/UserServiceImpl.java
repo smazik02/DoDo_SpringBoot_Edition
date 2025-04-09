@@ -7,6 +7,7 @@ import com.stanley.dodospring.domain.entities.UserEntity;
 import com.stanley.dodospring.mappers.UserMapper;
 import com.stanley.dodospring.repositories.UserRepository;
 import com.stanley.dodospring.services.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Optional<ReturnUserDto> update(Long id, UpdateFilterUserDto updateUserDto) {
         return userRepository.findById(id).map(existingUser -> {
             Optional.ofNullable(updateUserDto.username()).ifPresent(existingUser::setUsername);

@@ -2,11 +2,13 @@ package com.stanley.dodospring.services.impl;
 
 import com.stanley.dodospring.domain.dto.note.FilterNoteDto;
 import com.stanley.dodospring.domain.dto.note.NoteDto;
+import com.stanley.dodospring.domain.dto.note.UpdateNoteDto;
 import com.stanley.dodospring.domain.entities.NoteEntity;
 import com.stanley.dodospring.mappers.NoteMapper;
 import com.stanley.dodospring.repositories.NoteRepository;
 import com.stanley.dodospring.repositories.UserRepository;
 import com.stanley.dodospring.services.NoteService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,12 +42,31 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    @Transactional
     public Optional<NoteDto> create(NoteDto createNoteDto) {
         return userRepository.findById(createNoteDto.userId()).map(noteAuthor -> {
             NoteEntity noteEntity = noteMapper.mapFrom(createNoteDto);
             NoteEntity createdNote = noteRepository.save(noteEntity);
             return noteMapper.mapTo(createdNote);
         });
+    }
+
+    @Override
+    @Transactional
+    public Optional<NoteDto> update(Long id, UpdateNoteDto updateNoteDto) {
+        return noteRepository.findById(id).map(existingNote -> {
+            Optional.ofNullable(updateNoteDto.title()).ifPresent(existingNote::setTitle);
+            Optional.ofNullable(updateNoteDto.body()).ifPresent(existingNote::setBody);
+            Optional.ofNullable(updateNoteDto.icon()).ifPresent(existingNote::setIcon);
+            Optional.ofNullable(updateNoteDto.color()).ifPresent(existingNote::setColor);
+            NoteEntity editedNote = noteRepository.save(existingNote);
+            return noteMapper.mapTo(editedNote);
+        });
+    }
+
+    @Override
+    public void delete(Long id) {
+        noteRepository.deleteById(id);
     }
 
     @Override
