@@ -7,39 +7,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "notes")
-public class NoteEntity {
+@Table(name = "tasks")
+public class TaskEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_id_seq")
-    @SequenceGenerator(name = "note_id_seq", sequenceName = "note_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_id_seq")
+    @SequenceGenerator(name = "task_id_seq", sequenceName = "task_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
-    private String title = "Title";
+    private String name = "";
 
     @Column(nullable = false)
-    private String body = "Write something here!";
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false ,updatable = false)
-    private Date createdAt = new Date();
-
-    private String icon;
+    private String description = "";
 
     @Column(nullable = false)
-    private String color = "red";
+    private Boolean isDone = false;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private UserEntity user;
-
 }

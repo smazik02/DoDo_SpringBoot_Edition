@@ -22,7 +22,7 @@ public class UserMapper {
     }
 
     public UserEntity mapFrom(CreateUserDto createUserDto) {
-        UserEntity userEntity = new UserEntity();
+        var userEntity = new UserEntity();
         userEntity.setUsername(createUserDto.username());
         userEntity.setEmail(createUserDto.email());
         userEntity.setPassword(this.passwordEncoder.encode(createUserDto.password()));
@@ -32,7 +32,7 @@ public class UserMapper {
     }
 
     public UserEntity mapFromWithPassword(RegisterDto registerDto) {
-        UserEntity userEntity = new UserEntity();
+        var userEntity = new UserEntity();
         userEntity.setUsername(registerDto.username());
         userEntity.setEmail(registerDto.email());
         userEntity.setPassword(this.passwordEncoder.encode(registerDto.password()));

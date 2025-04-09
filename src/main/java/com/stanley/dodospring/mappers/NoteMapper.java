@@ -14,7 +14,6 @@ public class NoteMapper {
         return new NoteDto(
                 noteEntity.getTitle(),
                 noteEntity.getBody(),
-                noteEntity.getCreatedAt(),
                 noteEntity.getIcon(),
                 noteEntity.getColor(),
                 noteEntity.getUser().getId()
@@ -22,13 +21,13 @@ public class NoteMapper {
     }
 
     public NoteEntity mapFrom(NoteDto noteDto) {
-        NoteEntity noteEntity = new NoteEntity();
+        var noteEntity = new NoteEntity();
         Optional.ofNullable(noteDto.title()).ifPresent(noteEntity::setTitle);
         Optional.ofNullable(noteDto.body()).ifPresent(noteEntity::setBody);
         Optional.ofNullable(noteDto.icon()).ifPresent(noteEntity::setIcon);
         Optional.ofNullable(noteDto.color()).ifPresent(noteEntity::setColor);
 
-        UserEntity userEntity = new UserEntity();
+        var userEntity = new UserEntity();
         userEntity.setId(noteDto.userId());
         noteEntity.setUser(userEntity);
 

@@ -5,6 +5,6 @@ services:
     image: postgres
     ports:
       - "5432:5432"
-    restart: always
+    restart: no
     environment:
       POSTGRES_PASSWORD: dodobase

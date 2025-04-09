@@ -4,11 +4,14 @@ import jakarta.validation.constraints.NotNull;
 
 public record FilterNoteDto(
         String title,
-        String body,
-        String icon,
-        String color,
-        @NotNull
-        Long userId
 
+        String body,
+
+        String icon,
+
+        String color,
+
+        @NotNull(message = "Cannot filter without an author's id")
+        Long userId
 ) {
 }
