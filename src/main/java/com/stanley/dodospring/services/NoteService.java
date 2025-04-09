@@ -12,7 +12,7 @@ public interface NoteService {
 
     List<NoteDto> findByUser(Long userId);
 
-    Optional<NoteDto> create(NoteDto createNoteDto);
+    Optional<NoteDto> create(NoteDto noteDto);
 
     Optional<NoteDto> update(Long id, UpdateNoteDto updateNoteDto);
 

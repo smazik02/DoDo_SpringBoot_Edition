@@ -9,6 +9,7 @@ import com.stanley.dodospring.repositories.NoteRepository;
 import com.stanley.dodospring.repositories.UserRepository;
 import com.stanley.dodospring.services.NoteService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,17 +17,12 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Service
+@RequiredArgsConstructor
 public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository noteRepository;
     private final UserRepository userRepository;
     private final NoteMapper noteMapper;
-
-    public NoteServiceImpl(NoteRepository noteRepository, UserRepository userRepository, NoteMapper noteMapper) {
-        this.noteRepository = noteRepository;
-        this.userRepository = userRepository;
-        this.noteMapper = noteMapper;
-    }
 
     @Override
     public Optional<NoteDto> findOne(Long id) {
@@ -43,9 +39,9 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     @Transactional
-    public Optional<NoteDto> create(NoteDto createNoteDto) {
-        return userRepository.findById(createNoteDto.userId()).map(noteAuthor -> {
-            NoteEntity noteEntity = noteMapper.mapFrom(createNoteDto);
+    public Optional<NoteDto> create(NoteDto noteDto) {
+        return userRepository.findById(noteDto.userId()).map(noteAuthor -> {
+            NoteEntity noteEntity = noteMapper.mapFrom(noteDto);
             NoteEntity createdNote = noteRepository.save(noteEntity);
             return noteMapper.mapTo(createdNote);
         });

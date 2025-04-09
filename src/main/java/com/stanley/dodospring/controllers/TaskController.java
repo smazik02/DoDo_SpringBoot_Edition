@@ -1,9 +1,9 @@
 package com.stanley.dodospring.controllers;
 
-import com.stanley.dodospring.domain.dto.note.FilterNoteDto;
-import com.stanley.dodospring.domain.dto.note.NoteDto;
-import com.stanley.dodospring.domain.dto.note.UpdateNoteDto;
-import com.stanley.dodospring.services.NoteService;
+import com.stanley.dodospring.domain.dto.task.FilterTaskDto;
+import com.stanley.dodospring.domain.dto.task.TaskDto;
+import com.stanley.dodospring.domain.dto.task.UpdateTaskDto;
+import com.stanley.dodospring.services.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,49 +16,49 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("/tasks")
 @RequiredArgsConstructor
-public class NoteController {
+public class TaskController {
 
-    private final NoteService noteService;
+    private final TaskService taskService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<NoteDto> getNoteById(@PathVariable("id") Long id) {
-        return noteService.findOne(id)
-                .map(noteEntity -> new ResponseEntity<>(noteEntity, HttpStatus.OK))
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable("id") Long id) {
+        return taskService.findOne(id)
+                .map(task -> new ResponseEntity<>(task, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(path = "/user/{id}")
-    public ResponseEntity<List<NoteDto>> getNoteByUser(@PathVariable("id") Long userId) {
-        return new ResponseEntity<>(noteService.findByUser(userId), HttpStatus.OK);
+    @GetMapping(path = "user/{id}")
+    public ResponseEntity<List<TaskDto>> getTasksByUser(@PathVariable("id") Long userId) {
+        return new ResponseEntity<>(taskService.findByUser(userId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/filter")
-    public ResponseEntity<List<NoteDto>> filterNotes(@Valid @RequestBody FilterNoteDto filterNoteDto) {
-        return new ResponseEntity<>(noteService.filter(filterNoteDto), HttpStatus.OK);
+    public ResponseEntity<List<TaskDto>> filterTasks(@Valid @RequestBody FilterTaskDto filterTaskDto) {
+        return new ResponseEntity<>(taskService.filter(filterTaskDto), HttpStatus.OK);
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<NoteDto> createNote(@Valid @RequestBody NoteDto createNoteDto) {
-        return noteService.create(createNoteDto)
-                .map(editedNote -> new ResponseEntity<>(editedNote, HttpStatus.CREATED))
+    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto createTaskDto) {
+        return taskService.create(createTaskDto)
+                .map(editedTask -> new ResponseEntity<>(editedTask, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<NoteDto> updateNote(
+    public ResponseEntity<TaskDto> updateTask(
             @PathVariable("id") Long id,
-            @RequestBody UpdateNoteDto updateNoteDto
+            @RequestBody UpdateTaskDto updateTaskDto
     ) {
-        return noteService.update(id, updateNoteDto)
-                .map(note -> new ResponseEntity<>(note, HttpStatus.OK))
+        return taskService.update(id, updateTaskDto)
+                .map(task -> new ResponseEntity<>(task, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteNote(@PathVariable("id") Long id) {
-        noteService.delete(id);
+    public ResponseEntity<?> deleteTask(@PathVariable("id") Long id) {
+        taskService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -3,9 +3,11 @@ package com.stanley.dodospring.mappers;
 import com.stanley.dodospring.domain.dto.task.TaskDto;
 import com.stanley.dodospring.domain.entities.TaskEntity;
 import com.stanley.dodospring.domain.entities.UserEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class TaskMapper {
 
     public TaskDto mapTo(TaskEntity taskEntity) {
