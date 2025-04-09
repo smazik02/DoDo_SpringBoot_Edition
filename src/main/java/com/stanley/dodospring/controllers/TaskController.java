@@ -42,7 +42,7 @@ public class TaskController {
     @PostMapping(path = "/")
     public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto createTaskDto) {
         return taskService.create(createTaskDto)
-                .map(editedTask -> new ResponseEntity<>(editedTask, HttpStatus.CREATED))
+                .map(task -> new ResponseEntity<>(task, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

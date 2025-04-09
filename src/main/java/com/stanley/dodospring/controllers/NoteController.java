@@ -25,7 +25,7 @@ public class NoteController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<NoteDto> getNoteById(@PathVariable("id") Long id) {
         return noteService.findOne(id)
-                .map(noteEntity -> new ResponseEntity<>(noteEntity, HttpStatus.OK))
+                .map(note -> new ResponseEntity<>(note, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -42,7 +42,7 @@ public class NoteController {
     @PostMapping(path = "/")
     public ResponseEntity<NoteDto> createNote(@Valid @RequestBody NoteDto createNoteDto) {
         return noteService.create(createNoteDto)
-                .map(editedNote -> new ResponseEntity<>(editedNote, HttpStatus.CREATED))
+                .map(note -> new ResponseEntity<>(note, HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

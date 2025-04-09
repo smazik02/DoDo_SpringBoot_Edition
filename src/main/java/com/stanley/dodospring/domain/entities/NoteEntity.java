@@ -29,7 +29,7 @@ public class NoteEntity {
     private String body = "Write something here!";
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false ,updatable = false)
+    @Column(nullable = false, updatable = false)
     private Date createdAt = new Date();
 
     private String icon;

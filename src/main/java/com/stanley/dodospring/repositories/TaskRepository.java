@@ -4,7 +4,6 @@ import com.stanley.dodospring.domain.entities.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     @Query("select t from TaskEntity t where t.user.id = :userId")

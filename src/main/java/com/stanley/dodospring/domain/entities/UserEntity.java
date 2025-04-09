@@ -36,7 +36,6 @@ public class UserEntity implements Serializable {
 
     private String password;
 
-    @Column(columnDefinition = "varchar(255) default 'USER'")
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
 
